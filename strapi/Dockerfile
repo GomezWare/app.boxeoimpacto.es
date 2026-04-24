@@ -12,7 +12,7 @@ RUN npm ci
 COPY . .
 
 ENV NODE_ENV=production
-ENV HOST=127.0.0.1
+ENV HOST=0.0.0.0
 ENV PORT=1337
 
 RUN npm run build

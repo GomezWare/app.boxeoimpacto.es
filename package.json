@@ -1,0 +1,20 @@
+{
+  "name": "app.boxeoimpacto.es",
+  "version": "0.0.1",
+  "description": "Una aplicación para la gestión de boxeo impacto",
+  "homepage": "https://github.com/GomezWare/app.boxeoimpacto.es#readme",
+  "bugs": {
+    "url": "https://github.com/GomezWare/app.boxeoimpacto.es/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GomezWare/app.boxeoimpacto.es.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd strapi && npx strapi dev\" \"cd app && npm run dev\""
+  }
+}

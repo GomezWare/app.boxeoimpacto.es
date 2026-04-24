@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tarifas",
+  "info": {
+    "singularName": "tarifa",
+    "pluralName": "tarifas",
+    "displayName": "tarifas"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "importe": {
+      "type": "decimal"
+    }
+  }
+}

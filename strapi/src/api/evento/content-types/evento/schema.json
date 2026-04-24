@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "eventos",
+  "info": {
+    "singularName": "evento",
+    "pluralName": "eventos",
+    "displayName": "evento"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titulo": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "mensaje": {
+      "type": "text",
+      "required": true
+    },
+    "contenido": {
+      "type": "richtext"
+    },
+    "fechaNotifiacion": {
+      "type": "datetime"
+    }
+  }
+}

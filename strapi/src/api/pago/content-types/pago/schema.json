@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pagos",
+  "info": {
+    "singularName": "pago",
+    "pluralName": "pagos",
+    "displayName": "pagos"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cliente": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cliente.cliente"
+    },
+    "fechaPago": {
+      "type": "date",
+      "required": true
+    },
+    "fechaVencimiento": {
+      "type": "date",
+      "required": true
+    },
+    "tarifa": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tarifa.tarifa"
+    },
+    "recibo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    }
+  }
+}

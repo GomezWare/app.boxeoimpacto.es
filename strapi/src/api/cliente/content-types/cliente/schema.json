@@ -1,0 +1,69 @@
+{
+  "kind": "collectionType",
+  "collectionName": "clientes",
+  "info": {
+    "singularName": "cliente",
+    "pluralName": "clientes",
+    "displayName": "clientes"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "apellidos": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    },
+    "telefono": {
+      "type": "string",
+      "required": true
+    },
+    "fechaNacimiento": {
+      "type": "date",
+      "required": true
+    },
+    "consentimientoPadre": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "tipoUsuario": {
+      "type": "enumeration",
+      "enum": [
+        "adulto",
+        "niño"
+      ]
+    },
+    "hijos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cliente.cliente"
+    },
+    "horaClase": {
+      "type": "enumeration",
+      "enum": [
+        "Hora 4:00",
+        "Hora 5:00"
+      ]
+    }
+  }
+}

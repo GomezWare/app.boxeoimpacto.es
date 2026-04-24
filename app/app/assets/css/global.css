@@ -16,3 +16,7 @@
 
   --font-sans: 'Inter', sans-serif;
 }
+
+@utility container {
+  @apply mx-auto px-4;
+}

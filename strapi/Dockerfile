@@ -1,22 +1,29 @@
-FROM node:24-bookworm-slim
+# Dockerfile simple para Strapi en producción
+FROM node:24-alpine
 
+# Instalar dependencias del sistema
+RUN apk add --no-cache libc6-compat
+
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Necesario para compilar better-sqlite3
-RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ \
-  && rm -rf /var/lib/apt/lists/*
+# Copiar archivos de dependencias
+COPY package*.json ./
 
-COPY package.json package-lock.json ./
+# Instalar dependencias
 RUN npm ci
 
+# Copiar código fuente
 COPY . .
 
-ENV NODE_ENV=production
-ENV HOST=0.0.0.0
-ENV PORT=1337
-
+# Construir Strapi
 RUN npm run build
 
+# Crear directorio para base de datos
+RUN mkdir -p database
+
+# Exponer puerto
 EXPOSE 1337
 
-CMD ["npm", "start"]
+# Comando para ejecutar Strapi
+CMD ["npm", "start"] 

@@ -11,6 +11,10 @@ RUN npm ci
 
 COPY . .
 
+ENV NODE_ENV=production
+ENV HOST=127.0.0.1
+ENV PORT=1337
+
 RUN npm run build
 
 EXPOSE 1337

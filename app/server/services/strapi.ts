@@ -1,66 +1,89 @@
 import dotenv from 'dotenv';
-import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 
 dotenv.config();
-
 
 const STRAPI_URL = process.env.STRAPI_URL;
 const STRAPI_TOKEN = process.env.STRAPI_TOKEN;
 
+/*
+ * PETICIONES A LA API DE STRAPI
+ */
 
-/* 
-* PETIECIONES A LA API DE STRAPI
-*/
-
-const fetchStrapi = async (endpoint: string, body?: any,  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET') => {
+const fetchStrapi = async (
+  endpoint: string,
+  body?: unknown,
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET'
+) => {
   try {
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${STRAPI_TOKEN}`,
+    };
 
-    // Petición a la API de Strapi
-    const response = await fetch(`${STRAPI_URL}${endpoint}`, {
-    headers: {
-      'Authorization': `Bearer ${STRAPI_TOKEN}`,
-    },
-    body: JSON.stringify(body),
-    method,
-  });
+    const init: RequestInit = { method, headers };
 
-  // Obtener la respuesta de la API de Strapi
-  const data = await response.json();
+    if (method !== 'GET' && method !== 'DELETE' && body !== undefined) {
+      headers['Content-Type'] = 'application/json';
+      init.body = JSON.stringify(body);
+    }
 
-  // Si hay un error, lanzar un error
-  if (data.error) throw new Error(data.error.message ?? 'Error al conectar con la API de Strapi');
+    const response = await fetch(`${STRAPI_URL}${endpoint}`, init);
+    const data = await response.json();
 
-  // Si no hay error, devolver los datos
-  return data;
+    if (!response.ok || data.error) {
+      throw new Error(data.error?.message ?? `Error Strapi (${response.status})`);
+    }
 
-  // Captura de errores
+    return data;
   } catch (error) {
     console.error((error as Error).message);
     return null;
   }
+};
+
+type StrapiClienteRow = {
+  id: number;
+  documentId: string;
+  attributes: Record<string, unknown> & { clave?: string };
+};
+
+async function passwordMatches(stored: string, plain: string): Promise<boolean> {
+  const trimmed = stored.trim();
+  if (trimmed.startsWith('$2a$') || trimmed.startsWith('$2b$') || trimmed.startsWith('$2y$')) {
+    return bcrypt.compare(plain, trimmed);
+  }
+  return trimmed === plain;
 }
 
-
-// AUTH
+// AUTH: un solo GET por email; la clave no se filtra en Strapi (bcrypt aquí)
 
 export const findUser = async (email: string, password: string) => {
-  // Hasheamos la contraseña
-  const sha256 = crypto.createHash('sha256').update(password).digest('hex');
+  const query = new URLSearchParams({
+    'filters[email][$eq]': email,
+    'pagination[limit]': '1',
+  });
 
-  // Buscamos el usuario en la base de datos
-  const user = await fetchStrapi(`
-    /api/users
-    ?filters[email][$eq]=${email}
-    &filters[password][$eq]=${sha256}`);
+  const res = await fetchStrapi(`/api/clientes?${query.toString()}`);
 
-  // Si no existe, devolvemos null
-  if (user.data.length === 0) return null;
+  if (!res?.data || !Array.isArray(res.data) || res.data.length === 0) {
+    return null;
+  }
 
-  // Si existe, devolvemos el usuario
-  return user.data[0];
-}
+  const row = res.data[0] as StrapiClienteRow;
+  const stored = row.attributes?.clave;
 
+  if (typeof stored !== 'string' || !stored.length) {
+    return null;
+  }
 
+  if (!(await passwordMatches(stored, password))) {
+    return null;
+  }
 
-
-
+  const { clave: _clave, ...attrs } = row.attributes;
+  return {
+    id: row.id,
+    documentId: row.documentId,
+    ...attrs,
+  };
+};

@@ -1,4 +1,8 @@
+import { findUser } from '../services/strapi';
+
 export default defineEventHandler(async (event) => {
 
-return 'hello world';
+  const user = await findUser('webdavar@gmail.com', '123456');
+
+  return user;
 })

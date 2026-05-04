@@ -23,7 +23,7 @@
     "contenido": {
       "type": "richtext"
     },
-    "fechaNotifiacion": {
+    "fechaNotificacion": {
       "type": "datetime"
     }
   }

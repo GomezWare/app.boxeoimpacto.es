@@ -441,6 +441,8 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    activo: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    administrador: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     apellidos: Schema.Attribute.String & Schema.Attribute.Required;
     avatar: Schema.Attribute.Media<'images'>;
     consentimientoPadre: Schema.Attribute.Media<'files'>;
@@ -484,7 +486,7 @@ export interface ApiEventoEvento extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    fechaNotifiacion: Schema.Attribute.DateTime;
+    fechaNotificacion: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

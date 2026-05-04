@@ -11,6 +11,14 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "activo": {
+      "type": "boolean",
+      "default": false
+    },
+    "administrador": {
+      "type": "boolean",
+      "default": false
+    },
     "avatar": {
       "type": "media",
       "multiple": false,

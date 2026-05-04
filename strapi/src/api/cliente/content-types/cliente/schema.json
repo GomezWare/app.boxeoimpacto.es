@@ -40,8 +40,8 @@
       "unique": true
     },
     "clave": {
-      "type": "password",
-      "required": true
+      "type": "string",
+      "required": false
     },
     "telefono": {
       "type": "string",

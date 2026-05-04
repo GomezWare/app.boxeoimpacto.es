@@ -453,6 +453,7 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
     email: Schema.Attribute.Email &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    clave: Schema.Attribute.String;
     fechaNacimiento: Schema.Attribute.Date & Schema.Attribute.Required;
     hijos: Schema.Attribute.Relation<'oneToMany', 'api::cliente.cliente'>;
     horaClase: Schema.Attribute.Enumeration<['Hora 4:00', 'Hora 5:00']>;

@@ -445,6 +445,7 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
     administrador: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     apellidos: Schema.Attribute.String & Schema.Attribute.Required;
     avatar: Schema.Attribute.Media<'images'>;
+    clave: Schema.Attribute.Password & Schema.Attribute.Required;
     consentimientoPadre: Schema.Attribute.Media<'files'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

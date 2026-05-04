@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { buscarUsuario } from '~~/server/services/auth';
 import { generateToken } from '~~/server/utils/jwt';
 
@@ -36,6 +35,6 @@ export default defineEventHandler(async (event) => {
     path: '/',
   });
 
-  // Devolvemos el email del usuario
-  return user.email;
+  // Devolvemos el payload del usuario
+  return payload;
 })

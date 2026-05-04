@@ -11,7 +11,6 @@ export default defineEventHandler((event) => {
   try {
     decoded = verifyToken(token);
   } catch {
-    deleteCookie(event, 'session', { path: '/' });
     throw createError({ statusCode: 401, message: 'No autenticado' });
   }
 

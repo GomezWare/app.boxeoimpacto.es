@@ -1,0 +1,66 @@
+import dotenv from 'dotenv';
+import crypto from 'crypto';
+
+dotenv.config();
+
+
+const STRAPI_URL = process.env.STRAPI_URL;
+const STRAPI_TOKEN = process.env.STRAPI_TOKEN;
+
+
+/* 
+* PETIECIONES A LA API DE STRAPI
+*/
+
+const fetchStrapi = async (endpoint: string, body?: any,  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET') => {
+  try {
+
+    // Petición a la API de Strapi
+    const response = await fetch(`${STRAPI_URL}${endpoint}`, {
+    headers: {
+      'Authorization': `Bearer ${STRAPI_TOKEN}`,
+    },
+    body: JSON.stringify(body),
+    method,
+  });
+
+  // Obtener la respuesta de la API de Strapi
+  const data = await response.json();
+
+  // Si hay un error, lanzar un error
+  if (data.error) throw new Error(data.error.message ?? 'Error al conectar con la API de Strapi');
+
+  // Si no hay error, devolver los datos
+  return data;
+
+  // Captura de errores
+  } catch (error) {
+    console.error((error as Error).message);
+    return null;
+  }
+}
+
+
+// AUTH
+
+export const findUser = async (email: string, password: string) => {
+  // Hasheamos la contraseña
+  const sha256 = crypto.createHash('sha256').update(password).digest('hex');
+
+  // Buscamos el usuario en la base de datos
+  const user = await fetchStrapi(`
+    /api/users
+    ?filters[email][$eq]=${email}
+    &filters[password][$eq]=${sha256}`);
+
+  // Si no existe, devolvemos null
+  if (user.data.length === 0) return null;
+
+  // Si existe, devolvemos el usuario
+  return user.data[0];
+}
+
+
+
+
+

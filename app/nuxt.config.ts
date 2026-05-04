@@ -10,6 +10,8 @@ export default defineNuxtConfig({
   
   css: ['~/assets/css/global.css'],
 
+  ssr: false,
+
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
